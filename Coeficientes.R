@@ -74,34 +74,88 @@ tot_zm <- datos %>% group_by(cve_zm) %>% summarize(ue = sum(ue, na.rm = TRUE),
                                                    fb = sum(as.numeric(fb), na.rm = TRUE))
 
 
+
+
+## Coeficiente de localización económica (QL)
+
 # Numerador
 
-subsec_mun_div <- left_join(subsec_mun, tot_mun, by = c("cvegeo" = "cvegeo", "CVE_ZM" = "CVE_ZM")) %>% 
-  mutate(ue = ue.x/ue.y, af = af.x/af.y, fb = fb.x/fb.y, pb = pb.x/pb.y, po = po.x/po.y, re = re.x/re.y, va = va.x/va.y) %>% 
-  select(-ue.x, -ue.y, -af.x, -af.y, -fb.x, -fb.y, -pb.x, -pb.y, -po.x, -po.y, -re.x, -re.y, -va.x, -va.y)
+subsec_mun_div <- left_join(subsec_mun, tot_mun, by = c("cve_geo" = "cve_geo", "cve_zm" = "cve_zm")) %>% 
+  mutate(ue = ue.x/ue.y,
+         po_h = po_h.x/po_h.y,
+         po_m = po_m.x/po_m.y,
+         re = re.x/re.y,
+         pb = pb.x/pb.y,
+         pre = pre.x/pre.y,
+         pre_h = pre_h.x/pre_h.y,
+         pre_m = pre_m.x/pre_m.y,
+         pho = pho.x/pho.y,
+         pho_h = pho_h.x/pho_h.y,
+         pho_m = pho_m.x/pho_m.y,
+         va = va.x/va.y,
+         fb = fb.x/fb.y) %>% 
+  select(-ue.x, -ue.y, -po_h.x, -po_h.y, -po_m.x, -po_m.y, -re.x, -re.y, -pb.x, -pb.y, -pre.x, -pre.y,
+         -pre_h.x, -pre_h.y, -pre_m.x, -pre_m.y, -pho.x, -pho.y, -pho_h.x, -pho_h.y, -pho_m.x, -pho_m.y,
+         -va.x, -va.y, -fb.x, -fb.y)
+
 
 # Denominador
 
 # Unir vectores subsec_zm y tot_zm por CVE_ZM
 
-subsec_tot_zm <- left_join(subsec_zm, tot_zm, by = "CVE_ZM")
+subsec_tot_zm <- left_join(subsec_zm, tot_zm, by = "cve_zm")
+
+View(subsec_tot_zm)
 
 # Dividir los valores de subsec_zm entre los valores de tot_zm por CVE_ZM
 
 subsec_tot_zm_div <- subsec_tot_zm %>%
-  mutate(ue.div = ue.x/ue.y, af.div = af.x/af.y, fb.div = fb.x/fb.y, pb.div = pb.x/pb.y, po.div = po.x/po.y, re.div = re.x/re.y, va.div = va.x/va.y) %>% 
-  select(-ue.x, -ue.y, -af.x, -af.y, -fb.x, -fb.y, -pb.x, -pb.y, -po.x, -po.y, -re.x, -re.y, -va.x, -va.y)
+  mutate(ue.div = ue.x/ue.y,
+         po_h.div = po_h.x/po_h.y,
+         po_m.div = po_m.x/po_m.y,
+         re.div = re.x/re.y,
+         pb.div = pb.x/pb.y,
+         pre.div = pre.x/pre.y,
+         pre_h.div = pre_h.x/pre_h.y,
+         pre_m.div = pre_m.x/pre_m.y,
+         pho.div = pho.x/pho.y,
+         pho_h.div = pho_h.x/pho_h.y,
+         pho_m.div = pho_m.x/pho_m.y,
+         va.div = va.x/va.y,
+         fb.div = fb.x/fb.y) %>% 
+  select(-ue.x, -ue.y, -po_h.x, -po_h.y, -po_m.x, -po_m.y, -re.x, -re.y, -pb.x, -pb.y, -pre.x, -pre.y,
+         -pre_h.x, -pre_h.y, -pre_m.x, -pre_m.y, -pho.x, -pho.y, -pho_h.x, -pho_h.y, -pho_m.x, -pho_m.y,
+         -va.x, -va.y, -fb.x, -fb.y)
+
+View(subsec_tot_zm_div)
 
 # Resultado final QL
 
 # Unir subsec_mun_div y subsec_tot_zm_div por CVE_ZM y cve_sub
 
-QL <- left_join(subsec_mun_div, subsec_tot_zm_div, by = c("CVE_ZM", "cve_sub"))
+QL <- left_join(subsec_mun_div, subsec_tot_zm_div, by = c("cve_zm", "cve_sub"))
+
+View(QL)
 
 # Dividir cada variable de subsec_mun_div entre la variable correspondiente de subsec_tot_zm_div
 
-QL <- QL %>% mutate(QLue = ue / ue.div, QLaf = af / af.div, QLfb = fb/fb.div, QLpb = pb/pb.div, QLpo = po/po.div, QLre= re/re.div, QLva = va/va.div) %>% 
-  select(-ue, -ue.div, -af, -af.div, -fb, -fb.div, -fb, -fb.div, -pb, -pb.div, -po, -po.div, -re, -re.div, -va, -va.div)
+QL <- QL %>% 
+  mutate(QLue = ue / ue.div,
+         QLpo_h = po_h / po_h.div,
+         QLpo_m = po_m / po_m.div,
+         QLre = re / re.div,
+         QLpb = pb / pb.div,
+         QLpre = pre / pre.div,
+         QLpre_h = pre_h / pre_h.div,
+         QLpre_m = pre_m / pre_m.div,
+         QLpho = pho / pho.div,
+         QLpho_h = pho_h / pho_h.div,
+         QLpho_m = pho_m / pho_m.div,
+         QLva = va / va.div,
+         QLfb = fb / fb.div) %>% 
+  select(-ue, -ue.div, -po_h, -po_h.div, -po_m, -po_m.div, -re, -re.div, -pb, -pb.div, 
+         -pre, -pre.div, -pre_h, -pre_h.div, -pre_m, -pre_m.div, -pho, -pho.div, -pho_h, -pho_h.div, 
+         -pho_m, -pho_m.div, -va, -va.div, -fb, -fb.div)
 
 View(QL)
 
