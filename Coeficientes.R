@@ -5,47 +5,73 @@ library(dplyr)
 
 # Leer datos desde un archivo xlsx
 
-datos <- read_excel("C:\\Users\\leope\\Documents\\RepTemplates\\ZonasMetro\\Bases temporales\\Bases Largas\\BL_zm99.xlsx")
+datos <- read_excel("Bases/SAIC_2003.xlsx")
 
 # Crear vector subsec_mun
 
-subsec_mun <- datos %>% group_by(cvegeo, cve_sub, CVE_ZM) %>% summarize(ue = sum(ue, na.rm = TRUE), 
-                                                                        af = sum(af, na.rm = TRUE),  
-                                                                        fb = sum(fb, na.rm = TRUE), 
-                                                                        pb = sum(pb, na.rm = TRUE), 
-                                                                        po = sum(po, na.rm = TRUE), 
+subsec_mun <- datos %>% group_by(cve_geo, cve_sub, cve_zm) %>% summarize(ue = sum(ue, na.rm = TRUE), 
+                                                                        po_h = sum(po_h, na.rm = TRUE),  
+                                                                        po_m = sum(po_m, na.rm = TRUE), 
                                                                         re = sum(re, na.rm = TRUE), 
-                                                                        va = sum(va, na.rm = TRUE))
+                                                                        pb = sum(pb, na.rm = TRUE), 
+                                                                        pre = sum(pre, na.rm = TRUE),
+                                                                        pre_h = sum(pre_h, na.rm = TRUE),  
+                                                                        pre_m = sum(pre_m, na.rm = TRUE), 
+                                                                        pho = sum(pho, na.rm = TRUE), 
+                                                                        pho_h = sum(pho_h, na.rm = TRUE), 
+                                                                        pho_m = sum(pho_m, na.rm = TRUE),
+                                                                        va = sum(as.numeric(va), na.rm = TRUE),
+                                                                        fb = sum(as.numeric(fb), na.rm = TRUE))
 
 # Crear vector tot_mun
 
-tot_mun <- datos %>% group_by(cvegeo, CVE_ZM) %>% summarize(ue = sum(ue, na.rm = TRUE), 
-                                                            af = sum(af, na.rm = TRUE),  
-                                                            fb = sum(fb, na.rm = TRUE), 
-                                                            pb = sum(pb, na.rm = TRUE), 
-                                                            po = sum(po, na.rm = TRUE), 
+tot_mun <- datos %>% group_by(cve_geo, cve_zm) %>% summarize(ue = sum(ue, na.rm = TRUE), 
+                                                            po_h = sum(po_h, na.rm = TRUE),  
+                                                            po_m = sum(po_m, na.rm = TRUE), 
                                                             re = sum(re, na.rm = TRUE), 
-                                                            va = sum(va, na.rm = TRUE))
+                                                            pb = sum(pb, na.rm = TRUE), 
+                                                            pre = sum(pre, na.rm = TRUE),
+                                                            pre_h = sum(pre_h, na.rm = TRUE),  
+                                                            pre_m = sum(pre_m, na.rm = TRUE), 
+                                                            pho = sum(pho, na.rm = TRUE), 
+                                                            pho_h = sum(pho_h, na.rm = TRUE), 
+                                                            pho_m = sum(pho_m, na.rm = TRUE),
+                                                            va = sum(as.numeric(va), na.rm = TRUE),
+                                                            fb = sum(as.numeric(fb), na.rm = TRUE))
+View(tot_mun)
 
 # Crear vector subsec_zm
 
-subsec_zm <- datos %>% group_by(CVE_ZM, cve_sub) %>% summarize(ue = sum(ue, na.rm = TRUE), 
-                                                               af = sum(af, na.rm = TRUE),  
-                                                               fb = sum(fb, na.rm = TRUE), 
-                                                               pb = sum(pb, na.rm = TRUE), 
-                                                               po = sum(po, na.rm = TRUE), 
+subsec_zm <- datos %>% group_by(cve_zm, cve_sub) %>% summarize(ue = sum(ue, na.rm = TRUE), 
+                                                               po_h = sum(po_h, na.rm = TRUE),  
+                                                               po_m = sum(po_m, na.rm = TRUE), 
                                                                re = sum(re, na.rm = TRUE), 
-                                                               va = sum(va, na.rm = TRUE))
+                                                               pb = sum(pb, na.rm = TRUE), 
+                                                               pre = sum(pre, na.rm = TRUE),
+                                                               pre_h = sum(pre_h, na.rm = TRUE),  
+                                                               pre_m = sum(pre_m, na.rm = TRUE), 
+                                                               pho = sum(pho, na.rm = TRUE), 
+                                                               pho_h = sum(pho_h, na.rm = TRUE), 
+                                                               pho_m = sum(pho_m, na.rm = TRUE),
+                                                               va = sum(as.numeric(va), na.rm = TRUE),
+                                                               fb = sum(as.numeric(fb), na.rm = TRUE))
+View(subsec_zm)
 
 # Crear vector tot_zm
 
-tot_zm <- datos %>% group_by(CVE_ZM) %>% summarize(ue = sum(ue, na.rm = TRUE), 
-                                                   af = sum(af, na.rm = TRUE),  
-                                                   fb = sum(fb, na.rm = TRUE), 
-                                                   pb = sum(pb, na.rm = TRUE), 
-                                                   po = sum(po, na.rm = TRUE), 
+tot_zm <- datos %>% group_by(cve_zm) %>% summarize(ue = sum(ue, na.rm = TRUE), 
+                                                   po_h = sum(po_h, na.rm = TRUE),  
+                                                   po_m = sum(po_m, na.rm = TRUE), 
                                                    re = sum(re, na.rm = TRUE), 
-                                                   va = sum(va, na.rm = TRUE))
+                                                   pb = sum(pb, na.rm = TRUE), 
+                                                   pre = sum(pre, na.rm = TRUE),
+                                                   pre_h = sum(pre_h, na.rm = TRUE),  
+                                                   pre_m = sum(pre_m, na.rm = TRUE), 
+                                                   pho = sum(pho, na.rm = TRUE), 
+                                                   pho_h = sum(pho_h, na.rm = TRUE), 
+                                                   pho_m = sum(pho_m, na.rm = TRUE),
+                                                   va = sum(as.numeric(va), na.rm = TRUE),
+                                                   fb = sum(as.numeric(fb), na.rm = TRUE))
 
 
 # Numerador
