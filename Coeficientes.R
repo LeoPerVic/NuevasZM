@@ -21,7 +21,8 @@ subsec_mun <- datos %>% group_by(cve_geo, cve_sub, cve_zm) %>% summarize(ue = su
                                                                         pho_h = sum(pho_h, na.rm = TRUE), 
                                                                         pho_m = sum(pho_m, na.rm = TRUE),
                                                                         va = sum(as.numeric(va), na.rm = TRUE),
-                                                                        fb = sum(as.numeric(fb), na.rm = TRUE))
+                                                                        fb = sum(as.numeric(fb), na.rm = TRUE),
+                                                                        af = sum(as.numeric(af), na.rm = TRUE))
 
 # Crear vector tot_mun
 
@@ -37,7 +38,8 @@ tot_mun <- datos %>% group_by(cve_geo, cve_zm) %>% summarize(ue = sum(ue, na.rm 
                                                             pho_h = sum(pho_h, na.rm = TRUE), 
                                                             pho_m = sum(pho_m, na.rm = TRUE),
                                                             va = sum(as.numeric(va), na.rm = TRUE),
-                                                            fb = sum(as.numeric(fb), na.rm = TRUE))
+                                                            fb = sum(as.numeric(fb), na.rm = TRUE),
+                                                            af = sum(as.numeric(af), na.rm = TRUE))
 View(tot_mun)
 
 # Crear vector subsec_zm
@@ -54,7 +56,8 @@ subsec_zm <- datos %>% group_by(cve_zm, cve_sub) %>% summarize(ue = sum(ue, na.r
                                                                pho_h = sum(pho_h, na.rm = TRUE), 
                                                                pho_m = sum(pho_m, na.rm = TRUE),
                                                                va = sum(as.numeric(va), na.rm = TRUE),
-                                                               fb = sum(as.numeric(fb), na.rm = TRUE))
+                                                               fb = sum(as.numeric(fb), na.rm = TRUE),
+                                                               af = sum(as.numeric(af), na.rm = TRUE))
 View(subsec_zm)
 
 # Crear vector tot_zm
@@ -71,7 +74,8 @@ tot_zm <- datos %>% group_by(cve_zm) %>% summarize(ue = sum(ue, na.rm = TRUE),
                                                    pho_h = sum(pho_h, na.rm = TRUE), 
                                                    pho_m = sum(pho_m, na.rm = TRUE),
                                                    va = sum(as.numeric(va), na.rm = TRUE),
-                                                   fb = sum(as.numeric(fb), na.rm = TRUE))
+                                                   fb = sum(as.numeric(fb), na.rm = TRUE),
+                                                   af = sum(as.numeric(af), na.rm = TRUE))
 
 
 
@@ -93,10 +97,11 @@ subsec_mun_div <- left_join(subsec_mun, tot_mun, by = c("cve_geo" = "cve_geo", "
          pho_h = pho_h.x/pho_h.y,
          pho_m = pho_m.x/pho_m.y,
          va = va.x/va.y,
-         fb = fb.x/fb.y) %>% 
+         fb = fb.x/fb.y,
+         af = af.x/af.y) %>% 
   select(-ue.x, -ue.y, -po_h.x, -po_h.y, -po_m.x, -po_m.y, -re.x, -re.y, -pb.x, -pb.y, -pre.x, -pre.y,
          -pre_h.x, -pre_h.y, -pre_m.x, -pre_m.y, -pho.x, -pho.y, -pho_h.x, -pho_h.y, -pho_m.x, -pho_m.y,
-         -va.x, -va.y, -fb.x, -fb.y)
+         -va.x, -va.y, -fb.x, -fb.y, -af.x, -af.y)
 
 
 # Denominador
@@ -122,10 +127,11 @@ subsec_tot_zm_div <- subsec_tot_zm %>%
          pho_h.div = pho_h.x/pho_h.y,
          pho_m.div = pho_m.x/pho_m.y,
          va.div = va.x/va.y,
-         fb.div = fb.x/fb.y) %>% 
+         fb.div = fb.x/fb.y,
+         af.div = af.x/af.y) %>% 
   select(-ue.x, -ue.y, -po_h.x, -po_h.y, -po_m.x, -po_m.y, -re.x, -re.y, -pb.x, -pb.y, -pre.x, -pre.y,
          -pre_h.x, -pre_h.y, -pre_m.x, -pre_m.y, -pho.x, -pho.y, -pho_h.x, -pho_h.y, -pho_m.x, -pho_m.y,
-         -va.x, -va.y, -fb.x, -fb.y)
+         -va.x, -va.y, -fb.x, -fb.y, -af.x, -af.y)
 
 View(subsec_tot_zm_div)
 
@@ -152,10 +158,11 @@ QL <- QL %>%
          QLpho_h = pho_h / pho_h.div,
          QLpho_m = pho_m / pho_m.div,
          QLva = va / va.div,
-         QLfb = fb / fb.div) %>% 
+         QLfb = fb / fb.div,
+         QLaf = af / af.div,) %>% 
   select(-ue, -ue.div, -po_h, -po_h.div, -po_m, -po_m.div, -re, -re.div, -pb, -pb.div, 
          -pre, -pre.div, -pre_h, -pre_h.div, -pre_m, -pre_m.div, -pho, -pho.div, -pho_h, -pho_h.div, 
-         -pho_m, -pho_m.div, -va, -va.div, -fb, -fb.div)
+         -pho_m, -pho_m.div, -va, -va.div, -fb, -fb.div, -af, -af.div)
 
 View(QL)
 
@@ -175,8 +182,9 @@ PR <- subsec_mun %>%
          PRpho_h = pho_h.x / pho_h.y,
          PRpho_m = pho_m.x / pho_m.y,
          PRva = va.x / va.y,
-         PRfb = fb.x / fb.y) %>% 
-  select(cve_geo, cve_sub, cve_zm, PRue, PRpo_h, PRpo_m, PRre, PRpb, PRpre, PRpre_h, PRpre_m, PRpho, PRpho_h, PRpho_m, PRva, PRfb)
+         PRfb = fb.x / fb.y,
+         PRaf = af.x / af.y) %>% 
+  select(cve_geo, cve_sub, cve_zm, PRue, PRpo_h, PRpo_m, PRre, PRpb, PRpre, PRpre_h, PRpre_m, PRpho, PRpho_h, PRpho_m, PRva, PRfb, PRaf)
 
 
 View(PR)
@@ -199,8 +207,9 @@ resta <- tot_mun %>%
          Rpho_h = pho_h.x / pho_h.y,
          Rpho_m = pho_m.x / pho_m.y,
          Rva = va.x / va.y,
-         Rfb = fb.x / fb.y) %>% 
-  select(cve_geo, cve_zm, Rue, Rpo_h, Rpo_m, Rre, Rpb, Rpre, Rpre_h, Rpre_m, Rpho, Rpho_h, Rpho_m, Rva, Rfb)
+         Rfb = fb.x / fb.y,
+         Raf = af.x / af.y) %>% 
+  select(cve_geo, cve_zm, Rue, Rpo_h, Rpo_m, Rre, Rpb, Rpre, Rpre_h, Rpre_m, Rpho, Rpho_h, Rpho_m, Rva, Rfb, Raf)
 
 
 View(resta)
@@ -209,7 +218,7 @@ View(tot_zm)
 # Estimar HH
 
 HH <- PR %>% 
-  left_join(resta, by = c("cvegeo", "cve_zm")) %>% 
+  left_join(resta, by = c("cve_geo", "cve_zm")) %>% 
   mutate(HHue = PRue - Rue,
          HHpo_h = PRpo_h - Rpo_h,
          HHpo_m = PRpo_m - Rpo_m,
@@ -222,8 +231,9 @@ HH <- PR %>%
          HHpho_h = PRpho_h - Rpho_h,
          HHpho_m = PRpho_m - Rpho_m,
          HHva = PRva - Rva,
-         HHfb = PRfb - Rfb) %>% 
-  select(cve_geo, cve_sub, cve_zm, HHue, HHpo_h, HHpo_m, HHre, HHpb, HHpre, HHpre_h, HHpre_m, HHpho, HHpho_h, HHpho_m, HHva, HHfb)
+         HHfb = PRfb - Rfb,
+         HHaf = PRaf - Raf,) %>% 
+  select(cve_geo, cve_sub, cve_zm, HHue, HHpo_h, HHpo_m, HHre, HHpb, HHpre, HHpre_h, HHpre_m, HHpho, HHpho_h, HHpho_m, HHva, HHfb, HHaf)
 
 
 View(HH)
@@ -231,7 +241,7 @@ View(HH)
 # Estimar IHH
 
 IHH <- HH %>%
-  mutate_at(vars(HHue, HHpo_h, HHpo_m, HHre, HHpb, HHpre, HHpre_h, HHpre_m, HHpho, HHpho_h, HHpho_m, HHva, HHfb), ~ 1 - .) %>%
+  mutate_at(vars(HHue, HHpo_h, HHpo_m, HHre, HHpb, HHpre, HHpre_h, HHpre_m, HHpho, HHpho_h, HHpho_m, HHva, HHfb, HHaf), ~ 1 - .) %>%
   rename_with(~ paste0("IHH", gsub("HH", "", .)), starts_with("HH"))
 
 
