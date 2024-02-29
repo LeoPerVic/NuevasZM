@@ -1,3 +1,4 @@
+
 # Cargar librerías
 
 library(readxl)
@@ -5,7 +6,7 @@ library(dplyr)
 
 # Leer datos desde un archivo xlsx
 
-datos <- read_excel("Bases/SAIC_2018.xlsx")
+datos <- read_excel("Bases/SAIC_2008.xlsx")
 
 # Crear vector subsec_mun
 
@@ -239,8 +240,9 @@ HH <- PR %>%
          HHpho_m = PRpho_m - Rpho_m,
          HHva = PRva - Rva,
          HHfb = PRfb - Rfb,
-         HHaf = PRaf - Raf,) %>% 
-  select(cve_geo, cve_sub, cve_zm,HHue, HHpo_h, HHpo_m, HHre, HHpb, HHpre, HHpre_h, HHpre_m, HHpho, HHpho_h, HHpho_m, HHva, HHfb, HHaf)
+         HHaf = PRaf - Raf,
+         HHpo = PRpo - Rpo) %>% 
+  select(cve_geo, cve_sub, cve_zm, HHue, HHre, HHpb, HHva, HHfb, HHaf, HHpo, HHpo_m, HHpo_h, HHpre, HHpre_m, HHpre_h, HHpho, HHpho_m, HHpho_h)
 
 
 View(HH)
@@ -248,7 +250,7 @@ View(HH)
 # Estimar IHH
 
 IHH <- HH %>%
-  mutate_at(vars(HHue, HHpo_h, HHpo_m, HHre, HHpb, HHpre, HHpre_h, HHpre_m, HHpho, HHpho_h, HHpho_m, HHva, HHfb, HHaf), ~ 1 - .) %>%
+  mutate_at(vars(HHue, HHre, HHpb, HHva, HHfb, HHaf, HHpo, HHpo_m, HHpo_h, HHpre, HHpre_m, HHpre_h, HHpho, HHpho_m, HHpho_h), ~ 1 - .) %>%
   rename_with(~ paste0("IHH", gsub("HH", "", .)), starts_with("HH"))
 
 
@@ -260,7 +262,13 @@ BLzm99_final <- left_join(datos, QL, by = c("cve_geo", "cve_sub", "cve_zm")) %>%
   left_join(PR, by = c("cve_geo", "cve_sub", "cve_zm")) %>%
   left_join(HH, by = c("cve_geo", "cve_sub", "cve_zm")) %>%
   left_join(IHH, by = c("cve_geo", "cve_sub", "cve_zm"))%>%
-  rename( nom_zm = nom_zm.x.x)
+  rename(nom_zm = nom_zm.x)%>%
+  select(año, ent,mun, cve_geo, cve_zm, nom_zm, cve_sec, cve_sub,ae,
+         ue, re, pb, va, fb, af, po, po_m, po_h, pre, pre_m, pre_h, pho, pho_m, pho_h,
+         QLue, QLre, QLpb, QLva, QLfb, QLaf, QLpo, QLpo_m, QLpo_h, QLpre, QLpre_m, QLpre_h, QLpho, QLpho_m, QLpho_h,
+         PRue, PRre, PRpb, PRva, PRfb, PRaf, PRpo, PRpo_m, PRpo_h, PRpre, PRpre_m, PRpre_h, PRpho, PRpho_m, PRpho_h,
+         HHue, HHre, HHpb, HHva, HHfb, HHaf, HHpo, HHpo_m, HHpo_h, HHpre, HHpre_m, HHpre_h, HHpho, HHpho_m, HHpho_h,
+         IHHue, IHHre, IHHpb, IHHva, IHHfb, IHHaf, IHHpo, IHHpo_m, IHHpo_h, IHHpre, IHHpre_m, IHHpre_h, IHHpho, IHHpho_m, IHHpho_h)
 
 View(BLzm99_final)
 
@@ -268,7 +276,7 @@ View(BLzm99_final)
 
 library(openxlsx)
 
-write.xlsx(BLzm99_final, "BLzm18_final.xlsx")
+write.xlsx(BLzm99_final, "BLzm08_final.xlsx")
 
 
 
