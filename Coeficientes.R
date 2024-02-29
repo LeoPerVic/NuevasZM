@@ -164,13 +164,20 @@ View(QL)
 PR <- subsec_mun %>% 
   left_join(subsec_zm, by = c("cve_sub", "cve_zm")) %>% 
   mutate(PRue = ue.x / ue.y,
-         PRaf = af.x / af.y,
-         PRfb = fb.x / fb.y,
-         PRpb = pb.x / pb.y,
-         PRpo = po.x / po.y,
+         PRpo_h = po_h.x / po_h.y,
+         PRpo_m = po_m.x / po_m.y,
          PRre = re.x / re.y,
-         PRva = va.x / va.y) %>% 
-  select(cve_geo, cve_sub, cve_zm, PRue, PRaf, PRfb, PRpb, PRpo, PRre, PRva)
+         PRpb = pb.x / pb.y,
+         PRpre = pre.x / pre.y,
+         PRpre_h = pre_h.x / pre_h.y,
+         PRpre_m = pre_m.x / pre_m.y,
+         PRpho = pho.x / pho.y,
+         PRpho_h = pho_h.x / pho_h.y,
+         PRpho_m = pho_m.x / pho_m.y,
+         PRva = va.x / va.y,
+         PRfb = fb.x / fb.y) %>% 
+  select(cve_geo, cve_sub, cve_zm, PRue, PRpo_h, PRpo_m, PRre, PRpb, PRpre, PRpre_h, PRpre_m, PRpho, PRpho_h, PRpho_m, PRva, PRfb)
+
 
 View(PR)
 
@@ -181,13 +188,20 @@ View(PR)
 resta <- tot_mun %>% 
   left_join(tot_zm, by = c("cve_zm")) %>% 
   mutate(Rue = ue.x / ue.y,
-         Raf = af.x / af.y,
-         Rfb = fb.x / fb.y,
-         Rpb = pb.x / pb.y,
-         Rpo = po.x / po.y,
+         Rpo_h = po_h.x / po_h.y,
+         Rpo_m = po_m.x / po_m.y,
          Rre = re.x / re.y,
-         Rva = va.x / va.y) %>% 
-  select(cve_geo, cve_zm, Rue,Raf, Rfb, Rpb, Rpo, Rre, Rva)
+         Rpb = pb.x / pb.y,
+         Rpre = pre.x / pre.y,
+         Rpre_h = pre_h.x / pre_h.y,
+         Rpre_m = pre_m.x / pre_m.y,
+         Rpho = pho.x / pho.y,
+         Rpho_h = pho_h.x / pho_h.y,
+         Rpho_m = pho_m.x / pho_m.y,
+         Rva = va.x / va.y,
+         Rfb = fb.x / fb.y) %>% 
+  select(cve_geo, cve_zm, Rue, Rpo_h, Rpo_m, Rre, Rpb, Rpre, Rpre_h, Rpre_m, Rpho, Rpho_h, Rpho_m, Rva, Rfb)
+
 
 View(resta)
 View(tot_mun)
@@ -195,24 +209,31 @@ View(tot_zm)
 # Estimar HH
 
 HH <- PR %>% 
-  
-  left_join(resta, by = c("cve_geo", "cve_zm")) %>% 
+  left_join(resta, by = c("cvegeo", "cve_zm")) %>% 
   mutate(HHue = PRue - Rue,
-         HHaf = PRaf - Raf,
-         HHfb = PRfb - Rfb,
-         HHpb = PRpb - Rpb,
-         HHpo = PRpo - Rpo,
+         HHpo_h = PRpo_h - Rpo_h,
+         HHpo_m = PRpo_m - Rpo_m,
          HHre = PRre - Rre,
-         HHva = PRva - Rva) %>% 
-  select(cve_geo, cve_sub, cve_zm, HHue,HHaf, HHfb, HHpb, HHpo, HHre, HHva)
+         HHpb = PRpb - Rpb,
+         HHpre = PRpre - Rpre,
+         HHpre_h = PRpre_h - Rpre_h,
+         HHpre_m = PRpre_m - Rpre_m,
+         HHpho = PRpho - Rpho,
+         HHpho_h = PRpho_h - Rpho_h,
+         HHpho_m = PRpho_m - Rpho_m,
+         HHva = PRva - Rva,
+         HHfb = PRfb - Rfb) %>% 
+  select(cve_geo, cve_sub, cve_zm, HHue, HHpo_h, HHpo_m, HHre, HHpb, HHpre, HHpre_h, HHpre_m, HHpho, HHpho_h, HHpho_m, HHva, HHfb)
+
 
 View(HH)
 
 # Estimar IHH
 
 IHH <- HH %>%
-  mutate_at(vars(HHue, HHaf, HHfb, HHpb, HHpo, HHre, HHva), ~ 1 - .) %>%
+  mutate_at(vars(HHue, HHpo_h, HHpo_m, HHre, HHpb, HHpre, HHpre_h, HHpre_m, HHpho, HHpho_h, HHpho_m, HHva, HHfb), ~ 1 - .) %>%
   rename_with(~ paste0("IHH", gsub("HH", "", .)), starts_with("HH"))
+
 
 View(IHH)
 
@@ -229,7 +250,7 @@ View(BLzm99_final)
 
 library(openxlsx)
 
-write.xlsx(BLzm99_final, "BLzm99_final.xlsx")
+write.xlsx(BLzm99_final, "BLzm04_final.xlsx")
 
 
 
