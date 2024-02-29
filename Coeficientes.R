@@ -6,7 +6,7 @@ library(dplyr)
 
 # Leer datos desde un archivo xlsx
 
-datos <- read_excel("Bases/SAIC_2008.xlsx")
+datos <- read_excel("Bases/SAIC_2003.xlsx")
 
 # Crear vector subsec_mun
 
@@ -276,7 +276,7 @@ View(BLzm99_final)
 
 library(openxlsx)
 
-write.xlsx(BLzm99_final, "BLzm08_final.xlsx")
+write.xlsx(BLzm99_final, "BLzm03_final.xlsx")
 
 
 
