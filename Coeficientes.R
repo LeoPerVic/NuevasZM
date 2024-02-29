@@ -10,72 +10,75 @@ datos <- read_excel("Bases/SAIC_2018.xlsx")
 # Crear vector subsec_mun
 
 subsec_mun <- datos %>% group_by(cve_geo, cve_sub, cve_zm, nom_zm) %>% summarize(ue = sum(ue, na.rm = TRUE), 
-                                                                        po_h = sum(po_h, na.rm = TRUE),  
-                                                                        po_m = sum(po_m, na.rm = TRUE), 
-                                                                        re = sum(re, na.rm = TRUE), 
+                                                                        re = sum(re, na.rm = TRUE),
                                                                         pb = sum(as.numeric(pb), na.rm = TRUE), 
-                                                                        pre = sum(pre, na.rm = TRUE),
-                                                                        pre_h = sum(pre_h, na.rm = TRUE),  
-                                                                        pre_m = sum(pre_m, na.rm = TRUE), 
-                                                                        pho = sum(pho, na.rm = TRUE), 
-                                                                        pho_h = sum(pho_h, na.rm = TRUE), 
-                                                                        pho_m = sum(pho_m, na.rm = TRUE),
                                                                         va = sum(as.numeric(va), na.rm = TRUE),
                                                                         fb = sum(as.numeric(fb), na.rm = TRUE),
-                                                                        af = sum(as.numeric(af), na.rm = TRUE))
-
+                                                                        af = sum(as.numeric(af), na.rm = TRUE),
+                                                                        po = sum(as.numeric(po), na.rm = TRUE),
+                                                                        po_m = sum(po_m, na.rm = TRUE), 
+                                                                        po_h = sum(po_h, na.rm = TRUE),  
+                                                                        pre = sum(pre, na.rm = TRUE),
+                                                                        pre_m = sum(pre_m, na.rm = TRUE),  
+                                                                        pre_h = sum(pre_h, na.rm = TRUE), 
+                                                                        pho = sum(pho, na.rm = TRUE), 
+                                                                        pho_m = sum(pho_m, na.rm = TRUE), 
+                                                                        pho_h = sum(pho_h, na.rm = TRUE))
 # Crear vector tot_mun
 
 tot_mun <- datos %>% group_by(cve_geo, cve_zm, nom_zm) %>% summarize(ue = sum(ue, na.rm = TRUE), 
-                                                            po_h = sum(po_h, na.rm = TRUE),  
-                                                            po_m = sum(po_m, na.rm = TRUE), 
-                                                            re = sum(re, na.rm = TRUE), 
-                                                            pb = sum(as.numeric(pb), na.rm = TRUE), 
-                                                            pre = sum(pre, na.rm = TRUE),
-                                                            pre_h = sum(pre_h, na.rm = TRUE),  
-                                                            pre_m = sum(pre_m, na.rm = TRUE), 
-                                                            pho = sum(pho, na.rm = TRUE), 
-                                                            pho_h = sum(pho_h, na.rm = TRUE), 
-                                                            pho_m = sum(pho_m, na.rm = TRUE),
-                                                            va = sum(as.numeric(va), na.rm = TRUE),
-                                                            fb = sum(as.numeric(fb), na.rm = TRUE),
-                                                            af = sum(as.numeric(af), na.rm = TRUE))
+                                                                     re = sum(re, na.rm = TRUE),
+                                                                     pb = sum(as.numeric(pb), na.rm = TRUE), 
+                                                                     va = sum(as.numeric(va), na.rm = TRUE),
+                                                                     fb = sum(as.numeric(fb), na.rm = TRUE),
+                                                                     af = sum(as.numeric(af), na.rm = TRUE),
+                                                                     po = sum(as.numeric(po), na.rm = TRUE),
+                                                                     po_m = sum(po_m, na.rm = TRUE), 
+                                                                     po_h = sum(po_h, na.rm = TRUE),  
+                                                                     pre = sum(pre, na.rm = TRUE),
+                                                                     pre_m = sum(pre_m, na.rm = TRUE),  
+                                                                     pre_h = sum(pre_h, na.rm = TRUE), 
+                                                                     pho = sum(pho, na.rm = TRUE), 
+                                                                     pho_m = sum(pho_m, na.rm = TRUE), 
+                                                                     pho_h = sum(pho_h, na.rm = TRUE))
 View(tot_mun)
 
 # Crear vector subsec_zm
 
 subsec_zm <- datos %>% group_by(cve_zm, nom_zm, cve_sub) %>% summarize(ue = sum(ue, na.rm = TRUE), 
-                                                               po_h = sum(po_h, na.rm = TRUE),  
-                                                               po_m = sum(po_m, na.rm = TRUE), 
-                                                               re = sum(re, na.rm = TRUE), 
-                                                               pb = sum(as.numeric(pb), na.rm = TRUE), 
-                                                               pre = sum(pre, na.rm = TRUE),
-                                                               pre_h = sum(pre_h, na.rm = TRUE),  
-                                                               pre_m = sum(pre_m, na.rm = TRUE), 
-                                                               pho = sum(pho, na.rm = TRUE), 
-                                                               pho_h = sum(pho_h, na.rm = TRUE), 
-                                                               pho_m = sum(pho_m, na.rm = TRUE),
-                                                               va = sum(as.numeric(va), na.rm = TRUE),
-                                                               fb = sum(as.numeric(fb), na.rm = TRUE),
-                                                               af = sum(as.numeric(af), na.rm = TRUE))
+                                                                       re = sum(re, na.rm = TRUE),
+                                                                       pb = sum(as.numeric(pb), na.rm = TRUE), 
+                                                                       va = sum(as.numeric(va), na.rm = TRUE),
+                                                                       fb = sum(as.numeric(fb), na.rm = TRUE),
+                                                                       af = sum(as.numeric(af), na.rm = TRUE),
+                                                                       po = sum(as.numeric(po), na.rm = TRUE),
+                                                                       po_m = sum(po_m, na.rm = TRUE), 
+                                                                       po_h = sum(po_h, na.rm = TRUE),  
+                                                                       pre = sum(pre, na.rm = TRUE),
+                                                                       pre_m = sum(pre_m, na.rm = TRUE),  
+                                                                       pre_h = sum(pre_h, na.rm = TRUE), 
+                                                                       pho = sum(pho, na.rm = TRUE), 
+                                                                       pho_m = sum(pho_m, na.rm = TRUE), 
+                                                                       pho_h = sum(pho_h, na.rm = TRUE))
 View(subsec_zm)
 
 # Crear vector tot_zm
 
 tot_zm <- datos %>% group_by(cve_zm, nom_zm) %>% summarize(ue = sum(ue, na.rm = TRUE), 
-                                                   po_h = sum(po_h, na.rm = TRUE),  
-                                                   po_m = sum(po_m, na.rm = TRUE), 
-                                                   re = sum(re, na.rm = TRUE), 
-                                                   pb = sum(as.numeric(pb), na.rm = TRUE), 
-                                                   pre = sum(pre, na.rm = TRUE),
-                                                   pre_h = sum(pre_h, na.rm = TRUE),  
-                                                   pre_m = sum(pre_m, na.rm = TRUE), 
-                                                   pho = sum(pho, na.rm = TRUE), 
-                                                   pho_h = sum(pho_h, na.rm = TRUE), 
-                                                   pho_m = sum(pho_m, na.rm = TRUE),
-                                                   va = sum(as.numeric(va), na.rm = TRUE),
-                                                   fb = sum(as.numeric(fb), na.rm = TRUE),
-                                                   af = sum(as.numeric(af), na.rm = TRUE))
+                                                           re = sum(re, na.rm = TRUE),
+                                                           pb = sum(as.numeric(pb), na.rm = TRUE), 
+                                                           va = sum(as.numeric(va), na.rm = TRUE),
+                                                           fb = sum(as.numeric(fb), na.rm = TRUE),
+                                                           af = sum(as.numeric(af), na.rm = TRUE),
+                                                           po = sum(as.numeric(po), na.rm = TRUE),
+                                                           po_m = sum(po_m, na.rm = TRUE), 
+                                                           po_h = sum(po_h, na.rm = TRUE),  
+                                                           pre = sum(pre, na.rm = TRUE),
+                                                           pre_m = sum(pre_m, na.rm = TRUE),  
+                                                           pre_h = sum(pre_h, na.rm = TRUE), 
+                                                           pho = sum(pho, na.rm = TRUE), 
+                                                           pho_m = sum(pho_m, na.rm = TRUE), 
+                                                           pho_h = sum(pho_h, na.rm = TRUE))
 
 
 
@@ -86,19 +89,20 @@ tot_zm <- datos %>% group_by(cve_zm, nom_zm) %>% summarize(ue = sum(ue, na.rm = 
 
 subsec_mun_div <- left_join(subsec_mun, tot_mun, by = c("cve_geo" = "cve_geo", "cve_zm" = "cve_zm", "nom_zm" = "nom_zm")) %>% 
   mutate(ue = ue.x/ue.y,
-         po_h = po_h.x/po_h.y,
-         po_m = po_m.x/po_m.y,
          re = re.x/re.y,
          pb = pb.x/pb.y,
+         va = va.x/va.y,
+         fb = fb.x/fb.y,
+         af = af.x/af.y,
+         po = po.x/po.y,
+         po_m = po_m./po_h.y,
+         po_m = po_m.x/po_m.y,
          pre = pre.x/pre.y,
          pre_h = pre_h.x/pre_h.y,
          pre_m = pre_m.x/pre_m.y,
          pho = pho.x/pho.y,
          pho_h = pho_h.x/pho_h.y,
-         pho_m = pho_m.x/pho_m.y,
-         va = va.x/va.y,
-         fb = fb.x/fb.y,
-         af = af.x/af.y) %>% 
+         pho_m = pho_m.x/pho_m.y) %>% 
   select(-ue.x, -ue.y, -po_h.x, -po_h.y, -po_m.x, -po_m.y, -re.x, -re.y, -pb.x, -pb.y, -pre.x, -pre.y,
          -pre_h.x, -pre_h.y, -pre_m.x, -pre_m.y, -pho.x, -pho.y, -pho_h.x, -pho_h.y, -pho_m.x, -pho_m.y,
          -va.x, -va.y, -fb.x, -fb.y, -af.x, -af.y)
