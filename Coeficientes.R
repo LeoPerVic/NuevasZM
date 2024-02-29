@@ -95,17 +95,17 @@ subsec_mun_div <- left_join(subsec_mun, tot_mun, by = c("cve_geo" = "cve_geo", "
          fb = fb.x/fb.y,
          af = af.x/af.y,
          po = po.x/po.y,
-         po_m = po_m./po_h.y,
          po_m = po_m.x/po_m.y,
+         po_h = po_h.x/po_h.y,
          pre = pre.x/pre.y,
-         pre_h = pre_h.x/pre_h.y,
          pre_m = pre_m.x/pre_m.y,
+         pre_h = pre_h.x/pre_h.y,
          pho = pho.x/pho.y,
-         pho_h = pho_h.x/pho_h.y,
-         pho_m = pho_m.x/pho_m.y) %>% 
+         pho_m = pho_m.x/pho_m.y,
+         pho_h = pho_h.x/pho_h.y) %>% 
   select(-ue.x, -ue.y, -po_h.x, -po_h.y, -po_m.x, -po_m.y, -re.x, -re.y, -pb.x, -pb.y, -pre.x, -pre.y,
          -pre_h.x, -pre_h.y, -pre_m.x, -pre_m.y, -pho.x, -pho.y, -pho_h.x, -pho_h.y, -pho_m.x, -pho_m.y,
-         -va.x, -va.y, -fb.x, -fb.y, -af.x, -af.y)
+         -va.x, -va.y, -fb.x, -fb.y, -af.x, -af.y, -po.x, -po.y)
 
 View(subsec_mun_div)
 # Denominador
@@ -120,22 +120,23 @@ View(subsec_tot_zm)
 
 subsec_tot_zm_div <- subsec_tot_zm %>%
   mutate(ue.div = ue.x/ue.y,
-         po_h.div = po_h.x/po_h.y,
-         po_m.div = po_m.x/po_m.y,
          re.div = re.x/re.y,
          pb.div = pb.x/pb.y,
-         pre.div = pre.x/pre.y,
-         pre_h.div = pre_h.x/pre_h.y,
-         pre_m.div = pre_m.x/pre_m.y,
-         pho.div = pho.x/pho.y,
-         pho_h.div = pho_h.x/pho_h.y,
-         pho_m.div = pho_m.x/pho_m.y,
          va.div = va.x/va.y,
          fb.div = fb.x/fb.y,
-         af.div = af.x/af.y) %>% 
+         af.div = af.x/af.y,
+         po.div = po.x/po.y,
+         po_m.div = po_m.x/po_m.y,
+         po_h.div = po_h.x/po_h.y,
+         pre.div = pre.x/pre.y,
+         pre_m.div = pre_m.x/pre_m.y,
+         pre_h.div = pre_h.x/pre_h.y,
+         pho.div = pho.x/pho.y,
+         pho_m.div = pho_m.x/pho_m.y,
+         pho_h.div = pho_h.x/pho_h.y) %>% 
   select(-ue.x, -ue.y, -po_h.x, -po_h.y, -po_m.x, -po_m.y, -re.x, -re.y, -pb.x, -pb.y, -pre.x, -pre.y,
          -pre_h.x, -pre_h.y, -pre_m.x, -pre_m.y, -pho.x, -pho.y, -pho_h.x, -pho_h.y, -pho_m.x, -pho_m.y,
-         -va.x, -va.y, -fb.x, -fb.y, -af.x, -af.y)
+         -va.x, -va.y, -fb.x, -fb.y, -af.x, -af.y, -po.x, -po.y)
 
 View(subsec_tot_zm_div)
 
@@ -151,22 +152,23 @@ View(QL)
 
 QL <- QL %>% 
   mutate(QLue = ue / ue.div,
-         QLpo_h = po_h / po_h.div,
-         QLpo_m = po_m / po_m.div,
          QLre = re / re.div,
          QLpb = pb / pb.div,
-         QLpre = pre / pre.div,
-         QLpre_h = pre_h / pre_h.div,
-         QLpre_m = pre_m / pre_m.div,
-         QLpho = pho / pho.div,
-         QLpho_h = pho_h / pho_h.div,
-         QLpho_m = pho_m / pho_m.div,
          QLva = va / va.div,
          QLfb = fb / fb.div,
-         QLaf = af / af.div,) %>% 
+         QLaf = af / af.div,
+         QLpo = po / po.div,
+         QLpo_m = po_m / po_m.div,
+         QLpo_h = po_h / po_h.div,
+         QLpre = pre / pre.div,
+         QLpre_m = pre_m / pre_m.div,
+         QLpre_h = pre_h / pre_h.div,
+         QLpho = pho / pho.div,
+         QLpho_m = pho_m / pho_m.div,
+         QLpho_h = pho_h / pho_h.div) %>% 
   select(-ue, -ue.div, -po_h, -po_h.div, -po_m, -po_m.div, -re, -re.div, -pb, -pb.div, 
          -pre, -pre.div, -pre_h, -pre_h.div, -pre_m, -pre_m.div, -pho, -pho.div, -pho_h, -pho_h.div, 
-         -pho_m, -pho_m.div, -va, -va.div, -fb, -fb.div, -af, -af.div, nom_zm.x, nom_zm.y)
+         -pho_m, -pho_m.div, -va, -va.div, -fb, -fb.div, -af, -af.div, -nom_zm.x, -nom_zm.y, -po, -po.div)
 
 View(QL)
 
@@ -175,21 +177,21 @@ View(QL)
 PR <- subsec_mun %>% 
   left_join(subsec_zm, by = c("cve_sub", "cve_zm")) %>% 
   mutate(PRue = ue.x / ue.y,
-         PRpo_h = po_h.x / po_h.y,
-         PRpo_m = po_m.x / po_m.y,
          PRre = re.x / re.y,
          PRpb = pb.x / pb.y,
-         PRpre = pre.x / pre.y,
-         PRpre_h = pre_h.x / pre_h.y,
-         PRpre_m = pre_m.x / pre_m.y,
-         PRpho = pho.x / pho.y,
-         PRpho_h = pho_h.x / pho_h.y,
-         PRpho_m = pho_m.x / pho_m.y,
          PRva = va.x / va.y,
          PRfb = fb.x / fb.y,
-         PRaf = af.x / af.y) %>% 
-  select(cve_geo, cve_sub, cve_zm, PRue, PRpo_h, PRpo_m, PRre, PRpb, PRpre, PRpre_h, PRpre_m, PRpho, PRpho_h, PRpho_m, PRva, PRfb, PRaf)
-
+         PRaf = af.x / af.y,
+         PRpo = po.x / po.y,
+         PRpo_m = po_m.x / po_m.y,
+         PRpo_h = po_h.x / po_h.y,
+         PRpre = pre.x / pre.y,
+         PRpre_m = pre_m.x / pre_m.y,
+         PRpre_h = pre_h.x / pre_h.y,
+         PRpho = pho.x / pho.y,
+         PRpho_m = pho_m.x / pho_m.y,
+         PRpho_h = pho_h.x / pho_h.y) %>% 
+  select(cve_geo, cve_sub, cve_zm,  PRue, PRre, PRpb, PRva, PRfb, PRaf, PRpo, PRpo_m, PRpo_h, PRpre, PRpre_m, PRpre_h, PRpho, PRpho_m, PRpho_h)
 
 View(PR)
 
@@ -212,8 +214,9 @@ resta <- tot_mun %>%
          Rpho_m = pho_m.x / pho_m.y,
          Rva = va.x / va.y,
          Rfb = fb.x / fb.y,
-         Raf = af.x / af.y) %>% 
-  select(cve_geo, cve_zm, Rue, Rpo_h, Rpo_m, Rre, Rpb, Rpre, Rpre_h, Rpre_m, Rpho, Rpho_h, Rpho_m, Rva, Rfb, Raf)
+         Raf = af.x / af.y,
+         Rpo = po.x/po.y)%>% 
+  select(cve_geo, cve_zm, Rue, Rre, Rpb, Rva, Rfb, Raf, Rpo, Rpo_m, Rpo_h, Rpre, Rpre_m, Rpre_h, Rpho, Rpho_m, Rpho_h,)
 
 
 View(resta)
