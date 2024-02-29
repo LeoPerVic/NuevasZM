@@ -101,13 +101,13 @@ subsec_mun_div <- left_join(subsec_mun, tot_mun, by = c("cve_geo" = "cve_geo", "
 
 # Denominador
 
-# Unir vectores subsec_zm y tot_zm por CVE_ZM
+# Unir vectores subsec_zm y tot_zm por cve_zm
 
 subsec_tot_zm <- left_join(subsec_zm, tot_zm, by = "cve_zm")
 
 View(subsec_tot_zm)
 
-# Dividir los valores de subsec_zm entre los valores de tot_zm por CVE_ZM
+# Dividir los valores de subsec_zm entre los valores de tot_zm por cve_zm
 
 subsec_tot_zm_div <- subsec_tot_zm %>%
   mutate(ue.div = ue.x/ue.y,
@@ -131,7 +131,7 @@ View(subsec_tot_zm_div)
 
 # Resultado final QL
 
-# Unir subsec_mun_div y subsec_tot_zm_div por CVE_ZM y cve_sub
+# Unir subsec_mun_div y subsec_tot_zm_div por cve_zm y cve_sub
 
 QL <- left_join(subsec_mun_div, subsec_tot_zm_div, by = c("cve_zm", "cve_sub"))
 
@@ -162,7 +162,7 @@ View(QL)
 # Estimar coeficiente PR
 
 PR <- subsec_mun %>% 
-  left_join(subsec_zm, by = c("cve_sub", "CVE_ZM")) %>% 
+  left_join(subsec_zm, by = c("cve_sub", "cve_zm")) %>% 
   mutate(PRue = ue.x / ue.y,
          PRaf = af.x / af.y,
          PRfb = fb.x / fb.y,
@@ -170,7 +170,7 @@ PR <- subsec_mun %>%
          PRpo = po.x / po.y,
          PRre = re.x / re.y,
          PRva = va.x / va.y) %>% 
-  select(cvegeo, cve_sub, CVE_ZM, PRue, PRaf, PRfb, PRpb, PRpo, PRre, PRva)
+  select(cve_geo, cve_sub, cve_zm, PRue, PRaf, PRfb, PRpb, PRpo, PRre, PRva)
 
 View(PR)
 
@@ -179,7 +179,7 @@ View(PR)
 # Estimar la parte que se resta
 
 resta <- tot_mun %>% 
-  left_join(tot_zm, by = c("CVE_ZM")) %>% 
+  left_join(tot_zm, by = c("cve_zm")) %>% 
   mutate(Rue = ue.x / ue.y,
          Raf = af.x / af.y,
          Rfb = fb.x / fb.y,
@@ -187,7 +187,7 @@ resta <- tot_mun %>%
          Rpo = po.x / po.y,
          Rre = re.x / re.y,
          Rva = va.x / va.y) %>% 
-  select(cvegeo, CVE_ZM, Rue,Raf, Rfb, Rpb, Rpo, Rre, Rva)
+  select(cve_geo, cve_zm, Rue,Raf, Rfb, Rpb, Rpo, Rre, Rva)
 
 View(resta)
 View(tot_mun)
@@ -196,7 +196,7 @@ View(tot_zm)
 
 HH <- PR %>% 
   
-  left_join(resta, by = c("cvegeo", "CVE_ZM")) %>% 
+  left_join(resta, by = c("cve_geo", "cve_zm")) %>% 
   mutate(HHue = PRue - Rue,
          HHaf = PRaf - Raf,
          HHfb = PRfb - Rfb,
@@ -204,7 +204,7 @@ HH <- PR %>%
          HHpo = PRpo - Rpo,
          HHre = PRre - Rre,
          HHva = PRva - Rva) %>% 
-  select(cvegeo, cve_sub, CVE_ZM, HHue,HHaf, HHfb, HHpb, HHpo, HHre, HHva)
+  select(cve_geo, cve_sub, cve_zm, HHue,HHaf, HHfb, HHpb, HHpo, HHre, HHva)
 
 View(HH)
 
@@ -218,10 +218,10 @@ View(IHH)
 
 # Unir datos 
 
-BLzm99_final <- left_join(datos, QL, by = c("cvegeo", "cve_sub", "CVE_ZM")) %>%
-  left_join(PR, by = c("cvegeo", "cve_sub", "CVE_ZM")) %>%
-  left_join(HH, by = c("cvegeo", "cve_sub", "CVE_ZM")) %>%
-  left_join(IHH, by = c("cvegeo", "cve_sub", "CVE_ZM"))
+BLzm99_final <- left_join(datos, QL, by = c("cve_geo", "cve_sub", "cve_zm")) %>%
+  left_join(PR, by = c("cve_geo", "cve_sub", "cve_zm")) %>%
+  left_join(HH, by = c("cve_geo", "cve_sub", "cve_zm")) %>%
+  left_join(IHH, by = c("cve_geo", "cve_sub", "cve_zm"))
 
 View(BLzm99_final)
 
