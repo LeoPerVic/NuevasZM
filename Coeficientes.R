@@ -5,15 +5,15 @@ library(dplyr)
 
 # Leer datos desde un archivo xlsx
 
-datos <- read_excel("Bases/SAIC_2003.xlsx")
+datos <- read_excel("Bases/SAIC_2018.xlsx")
 
 # Crear vector subsec_mun
 
-subsec_mun <- datos %>% group_by(cve_geo, cve_sub, cve_zm) %>% summarize(ue = sum(ue, na.rm = TRUE), 
+subsec_mun <- datos %>% group_by(cve_geo, cve_sub, cve_zm, nom_zm) %>% summarize(ue = sum(ue, na.rm = TRUE), 
                                                                         po_h = sum(po_h, na.rm = TRUE),  
                                                                         po_m = sum(po_m, na.rm = TRUE), 
                                                                         re = sum(re, na.rm = TRUE), 
-                                                                        pb = sum(pb, na.rm = TRUE), 
+                                                                        pb = sum(as.numeric(pb), na.rm = TRUE), 
                                                                         pre = sum(pre, na.rm = TRUE),
                                                                         pre_h = sum(pre_h, na.rm = TRUE),  
                                                                         pre_m = sum(pre_m, na.rm = TRUE), 
@@ -26,11 +26,11 @@ subsec_mun <- datos %>% group_by(cve_geo, cve_sub, cve_zm) %>% summarize(ue = su
 
 # Crear vector tot_mun
 
-tot_mun <- datos %>% group_by(cve_geo, cve_zm) %>% summarize(ue = sum(ue, na.rm = TRUE), 
+tot_mun <- datos %>% group_by(cve_geo, cve_zm, nom_zm) %>% summarize(ue = sum(ue, na.rm = TRUE), 
                                                             po_h = sum(po_h, na.rm = TRUE),  
                                                             po_m = sum(po_m, na.rm = TRUE), 
                                                             re = sum(re, na.rm = TRUE), 
-                                                            pb = sum(pb, na.rm = TRUE), 
+                                                            pb = sum(as.numeric(pb), na.rm = TRUE), 
                                                             pre = sum(pre, na.rm = TRUE),
                                                             pre_h = sum(pre_h, na.rm = TRUE),  
                                                             pre_m = sum(pre_m, na.rm = TRUE), 
@@ -44,11 +44,11 @@ View(tot_mun)
 
 # Crear vector subsec_zm
 
-subsec_zm <- datos %>% group_by(cve_zm, cve_sub) %>% summarize(ue = sum(ue, na.rm = TRUE), 
+subsec_zm <- datos %>% group_by(cve_zm, nom_zm, cve_sub) %>% summarize(ue = sum(ue, na.rm = TRUE), 
                                                                po_h = sum(po_h, na.rm = TRUE),  
                                                                po_m = sum(po_m, na.rm = TRUE), 
                                                                re = sum(re, na.rm = TRUE), 
-                                                               pb = sum(pb, na.rm = TRUE), 
+                                                               pb = sum(as.numeric(pb), na.rm = TRUE), 
                                                                pre = sum(pre, na.rm = TRUE),
                                                                pre_h = sum(pre_h, na.rm = TRUE),  
                                                                pre_m = sum(pre_m, na.rm = TRUE), 
@@ -62,11 +62,11 @@ View(subsec_zm)
 
 # Crear vector tot_zm
 
-tot_zm <- datos %>% group_by(cve_zm) %>% summarize(ue = sum(ue, na.rm = TRUE), 
+tot_zm <- datos %>% group_by(cve_zm, nom_zm) %>% summarize(ue = sum(ue, na.rm = TRUE), 
                                                    po_h = sum(po_h, na.rm = TRUE),  
                                                    po_m = sum(po_m, na.rm = TRUE), 
                                                    re = sum(re, na.rm = TRUE), 
-                                                   pb = sum(pb, na.rm = TRUE), 
+                                                   pb = sum(as.numeric(pb), na.rm = TRUE), 
                                                    pre = sum(pre, na.rm = TRUE),
                                                    pre_h = sum(pre_h, na.rm = TRUE),  
                                                    pre_m = sum(pre_m, na.rm = TRUE), 
@@ -84,7 +84,7 @@ tot_zm <- datos %>% group_by(cve_zm) %>% summarize(ue = sum(ue, na.rm = TRUE),
 
 # Numerador
 
-subsec_mun_div <- left_join(subsec_mun, tot_mun, by = c("cve_geo" = "cve_geo", "cve_zm" = "cve_zm")) %>% 
+subsec_mun_div <- left_join(subsec_mun, tot_mun, by = c("cve_geo" = "cve_geo", "cve_zm" = "cve_zm", "nom_zm" = "nom_zm")) %>% 
   mutate(ue = ue.x/ue.y,
          po_h = po_h.x/po_h.y,
          po_m = po_m.x/po_m.y,
@@ -103,12 +103,12 @@ subsec_mun_div <- left_join(subsec_mun, tot_mun, by = c("cve_geo" = "cve_geo", "
          -pre_h.x, -pre_h.y, -pre_m.x, -pre_m.y, -pho.x, -pho.y, -pho_h.x, -pho_h.y, -pho_m.x, -pho_m.y,
          -va.x, -va.y, -fb.x, -fb.y, -af.x, -af.y)
 
-
+View(subsec_mun_div)
 # Denominador
 
 # Unir vectores subsec_zm y tot_zm por cve_zm
 
-subsec_tot_zm <- left_join(subsec_zm, tot_zm, by = "cve_zm")
+subsec_tot_zm <- left_join(subsec_zm, tot_zm, by = "cve_zm", "nom_zm")
 
 View(subsec_tot_zm)
 
@@ -162,7 +162,7 @@ QL <- QL %>%
          QLaf = af / af.div,) %>% 
   select(-ue, -ue.div, -po_h, -po_h.div, -po_m, -po_m.div, -re, -re.div, -pb, -pb.div, 
          -pre, -pre.div, -pre_h, -pre_h.div, -pre_m, -pre_m.div, -pho, -pho.div, -pho_h, -pho_h.div, 
-         -pho_m, -pho_m.div, -va, -va.div, -fb, -fb.div, -af, -af.div)
+         -pho_m, -pho_m.div, -va, -va.div, -fb, -fb.div, -af, -af.div, nom_zm.x, nom_zm.y)
 
 View(QL)
 
@@ -233,7 +233,7 @@ HH <- PR %>%
          HHva = PRva - Rva,
          HHfb = PRfb - Rfb,
          HHaf = PRaf - Raf,) %>% 
-  select(cve_geo, cve_sub, cve_zm, HHue, HHpo_h, HHpo_m, HHre, HHpb, HHpre, HHpre_h, HHpre_m, HHpho, HHpho_h, HHpho_m, HHva, HHfb, HHaf)
+  select(cve_geo, cve_sub, cve_zm,HHue, HHpo_h, HHpo_m, HHre, HHpb, HHpre, HHpre_h, HHpre_m, HHpho, HHpho_h, HHpho_m, HHva, HHfb, HHaf)
 
 
 View(HH)
@@ -252,7 +252,8 @@ View(IHH)
 BLzm99_final <- left_join(datos, QL, by = c("cve_geo", "cve_sub", "cve_zm")) %>%
   left_join(PR, by = c("cve_geo", "cve_sub", "cve_zm")) %>%
   left_join(HH, by = c("cve_geo", "cve_sub", "cve_zm")) %>%
-  left_join(IHH, by = c("cve_geo", "cve_sub", "cve_zm"))
+  left_join(IHH, by = c("cve_geo", "cve_sub", "cve_zm"))%>%
+  rename( nom_zm = nom_zm.x.x)
 
 View(BLzm99_final)
 
@@ -260,7 +261,7 @@ View(BLzm99_final)
 
 library(openxlsx)
 
-write.xlsx(BLzm99_final, "BLzm04_final.xlsx")
+write.xlsx(BLzm99_final, "BLzm18_final.xlsx")
 
 
 
